@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MYSQL_HOST: "db-svc"
+  MYSQL_DB: "frodo"
+  SESSION_REDIS_HOST: "redis-svc"
+  SESSION_REDIS_PORT: "6379"

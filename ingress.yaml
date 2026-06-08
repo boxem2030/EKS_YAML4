@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:754386285201:certificate/bf041333-017e-4f39-a24a-fb24f47c1dcd
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+
+    # ExternalDNS 설정
+    external-dns.alpha.kubernetes.io/hostname: www.boxem.store
+    external-dns.alpha.kubernetes.io/ttl: "300"
+
+spec:
+  ingressClassName: alb
+  rules:
+    - host: www.boxem.store
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-svc
+                port:
+                  number: 80
